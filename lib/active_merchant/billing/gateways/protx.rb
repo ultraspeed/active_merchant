@@ -6,7 +6,7 @@ module ActiveMerchant #:nodoc:
       
       TEST_URL = 'https://test.sagepay.com/gateway/service'
       LIVE_URL = 'https://live.sagepay.com/gateway/service'
-      SIMULATOR_URL = 'https://test.sagepay.com/Simulator/VSPSimulator'
+      SIMULATOR_URL = 'https://test.sagepay.com/Simulator'
     
       APPROVED = 'OK'
     
