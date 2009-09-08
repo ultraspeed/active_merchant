@@ -172,11 +172,11 @@ module ActiveMerchant #:nodoc:
       end
       
       def add_3dsecure_flag(post, options)
-        add_pair(post, :Apply3DSecure, options[:apply_3dsecure] == true ? '0' : '2')
+        add_pair(post, :Apply3DSecure, options[:apply_3dsecure] == true ? '3' : '2')
       end
       
       def add_avscv2_flag(post, options)
-        add_pair(post, :ApplyAVSCV2, options[:apply_avscv2] == true ? '0' : '2')
+        add_pair(post, :ApplyAVSCV2, options[:apply_avscv2] == true ? '3' : '2')
       end
 
       def add_address(post, options)
