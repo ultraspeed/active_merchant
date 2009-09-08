@@ -65,6 +65,8 @@ module ActiveMerchant #:nodoc:
       
       def purchase(money, credit_card, options = {})
         requires!(options, :order_id)
+        requires!(options, :apply_avscv2)
+        requires!(options, :apply_3dsecure)
         
         post = {}
         
@@ -73,13 +75,16 @@ module ActiveMerchant #:nodoc:
         add_credit_card(post, credit_card)
         add_address(post, options)
         add_customer_data(post, options)
-        add_three_d_secure_flag(post, options)
+        add_3dsecure_flag(post, options)
+        add_avscv2_flag(post, options)
         
         commit(:purchase, post)
       end
       
       def authorize(money, credit_card, options = {})
         requires!(options, :order_id)
+        requires!(options, :apply_avscv2)
+        requires!(options, :apply_3dsecure)        
         
         post = {}
         
@@ -88,7 +93,8 @@ module ActiveMerchant #:nodoc:
         add_credit_card(post, credit_card)
         add_address(post, options)
         add_customer_data(post, options)
-        add_three_d_secure_flag(post, options)
+        add_3dsecure_flag(post, options)
+        add_avscv2_flag(post, options)
         
         commit(:authorization, post)
       end
@@ -165,12 +171,12 @@ module ActiveMerchant #:nodoc:
         add_pair(post, :ClientIPAddress, options[:ip])
       end
       
-      def add_three_d_secure_flag(post, options)
-        if three_d_secure_enabled? && options[:skip_3d_secure] != true
-          add_pair(post, :Apply3DSecure, '0')
-        else
-          add_pair(post, :Apply3DSecure, '2')
-        end
+      def add_3dsecure_flag(post, options)
+        add_pair(post, :Apply3DSecure, options[:apply_3dsecure].true? ? '0' : '2')
+      end
+      
+      def add_avscv2_flag(post, options)
+        add_pair(post, :ApplyAVSCV2, options[:apply_avscv2].true? ? '0' : '2')
       end
 
       def add_address(post, options)
