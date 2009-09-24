@@ -20,6 +20,7 @@ module ActiveMerchant #:nodoc:
       }
       
       CREDIT_CARDS = {
+        :visa_electron => "UKE",
         :visa => "VISA",
         :master => "MC",
         :delta => "DELTA",
@@ -27,13 +28,10 @@ module ActiveMerchant #:nodoc:
         :switch => "MAESTRO",
         :maestro => "MAESTRO",
         :american_express => "AMEX",
-        :electron => "UKE",
         :diners_club => "DC",
         :jcb => "JCB"
       }
-      
-      ELECTRON = /^(424519|42496[23]|450875|48440[6-8]|4844[1-5][1-5]|4917[3-5][0-9]|491880)\d{10}(\d{3})?$/
-      
+            
       AVS_CVV_CODE = {
         "NOTPROVIDED" => nil, 
         "NOTCHECKED" => 'X',
@@ -41,7 +39,7 @@ module ActiveMerchant #:nodoc:
         "NOTMATCHED" => 'N'
       }
     
-      self.supported_cardtypes = [:visa, :master, :american_express, :discover, :jcb, :switch, :solo, :maestro, :diners_club]
+      self.supported_cardtypes = [:visa, :visa_electron, :master, :american_express, :discover, :jcb, :switch, :solo, :maestro, :diners_club]
       self.supported_countries = ['GB']
       self.supports_3d_secure = true
       self.default_currency = 'GBP'
@@ -234,12 +232,7 @@ module ActiveMerchant #:nodoc:
         
         card_type = card_brand(credit_card).to_sym
         
-        # Check if it is an electron card
-        if card_type == :visa && credit_card.number =~ ELECTRON 
-          CREDIT_CARDS[:electron]
-        else  
-          CREDIT_CARDS[card_type]
-        end
+        CREDIT_CARDS[card_type]
       end
       
       # MMYY format
@@ -342,4 +335,3 @@ module ActiveMerchant #:nodoc:
     end
   end
 end
-

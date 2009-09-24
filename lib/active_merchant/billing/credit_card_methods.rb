@@ -1,20 +1,17 @@
 module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     # Convenience methods that can be included into a custom Credit Card object, such as an ActiveRecord based Credit Card object.
-    module CreditCardMethods
-      CARD_COMPANIES = { 
-        'visa'               => /^4\d{12}(\d{3})?$/,
-        'master'             => /^(5[1-5]\d{4}|677189)\d{10}$/,
-        'discover'           => /^(6011|65\d{2})\d{12}$/,
-        'american_express'   => /^3[47]\d{13}$/,
-        'diners_club'        => /^3(0[0-5]|[68]\d)\d{11}$/,
-        'jcb'                => /^3528\d{12}$/,
-        'switch'             => /^6759\d{12}(\d{2,3})?$/,  
-        'solo'               => /^6767\d{12}(\d{2,3})?$/,
-        'dankort'            => /^5019\d{12}$/,
-        'maestro'            => /^(5[06-8]|6\d)\d{10,17}$/,
-        'forbrugsforeningen' => /^600722\d{10}$/,
-        'laser'              => /^(6304[89]\d{11}(\d{2,3})?|670695\d{13})$/
+    module CreditCardMethods      
+      CARD_COMPANIES = {
+        'visa_electron'       => /^((417500\d{10})|(4(9(17|13)|508|844))\d{12})$/,
+        'visa'                => /^4\d{12,15}$/,
+        'master'              => /^5[1-5]\d{14}$/,
+        'discover'            => /^6((011\d{12})|(22(12[6-9]|1[3-9][0-9]|[2-8]\d{2}|9[0-1][0-9]|92[0-5])\d{10})|(4[4-9]\d{13})|(5\d{14}))$/,
+        'american_express'    => /^3[47]\d{13}$/,
+        'diners_club'         => /^3(0[0-5]|[68]\d)\d{11}$/,
+        'jcb'                 => /^35(2[8-9]|[3-8]\d)\d{12}$/,
+        'solo'                => /^6(334|767)\d{12}(\d{2,3})?$/,
+        'maestro'             => /^((50(18|20|38)|6(304|7(59|6[13])))\d{8,15}|((49(0[35]|11|36)|6(333|759))\d{12}(\d{2,3})?|(564182|633110)\d{10}(\d{2,3})?))$/
       }
     
       def self.included(base)
