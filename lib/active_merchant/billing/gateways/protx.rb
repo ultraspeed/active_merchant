@@ -134,7 +134,17 @@ module ActiveMerchant #:nodoc:
         commit(:three_d_complete, 'PARes' => pa_res, 'MD' => md)
       end
       
+      def three_d_capture(amount, transaction_id, authorization)
+        post = {}
+        
+        add_3d_reference(post, transaction_id, authorization)
+        add_release_amount(post, amount, options)
+        
+        commit(:capture, post)
+      end
+      
       private
+            
       def add_reference(post, identification)
         order_id, transaction_id, authorization, security_key = identification.split(';') 
         
@@ -142,6 +152,17 @@ module ActiveMerchant #:nodoc:
         add_pair(post, :VPSTxId, transaction_id)
         add_pair(post, :TxAuthNo, authorization)
         add_pair(post, :SecurityKey, security_key)
+      end
+      
+      # 3DSecure callbacks don't include the original VendorTxCode, so
+      # we must provide it, and split the authorization string differently.
+      def add_3d_reference(post, transaction_id, identification)
+        split_identification = identification.split(';')
+        
+        add_pair(post, :VendorTxCode, transaction_id)
+        add_pair(post, :VPSTxId, split_identification[1])
+        add_pair(post, :TxAuthNo, split_identification[2])
+        add_pair(post, :SecurityKey, split_identification[3])
       end
       
       def add_credit_reference(post, identification)
